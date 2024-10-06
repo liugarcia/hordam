@@ -1,1 +1,63 @@
 
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Área de Membros Exclusiva</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #accessPageBtn {
+            display: none; /* O botão de acesso estará oculto inicialmente */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>gostei</h1>
+    <button id="connectWalletBtn">Conectar Carteira</button>
+    <p id="status"></p>
+    <button id="accessPageBtn">Ir para a página de acesso</button>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script>
+        async function connectWallet() {
+            if (typeof window.ethereum !== 'undefined') {
+                try {
+                    // Solicita a conexão com a carteira
+                    const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+                    const currentAccount = accounts[0];
+                    
+                    // Armazena o endereço da carteira no sessionStorage
+                    sessionStorage.setItem('userAddress', currentAccount);
+                    
+                    document.getElementById('status').innerText = `Conectado: ${currentAccount}`;
+                    
+                    // Exibe o botão para seguir à página de acesso
+                    document.getElementById('accessPageBtn').style.display = 'block';
+                    
+                } catch (error) {
+                    console.error('Erro ao conectar à carteira:', error);
+                }
+            } else {
+                alert('MetaMask não está instalada!');
+                window.location.href = 'verificar_token.html';
+            }
+        }
+
+        // Adiciona o evento de clique para o botão "Conectar Carteira"
+        document.getElementById('connectWalletBtn').addEventListener('click', connectWallet);
+
+        // Adiciona o evento de clique para o botão "Ir para a página de acesso"
+        document.getElementById('accessPageBtn').addEventListener('click', function() {
+            window.location.href = 'verificar_token.html'; // Redireciona para a página de acesso
+        });
+    </script>
+
+</body>
+</html>
